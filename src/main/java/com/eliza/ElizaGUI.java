@@ -9,7 +9,7 @@ import java.awt.event.*;
  */
 public class ElizaGUI extends JFrame {
 
-    private ElizaEngine engine;
+    private RuleBasedEngine engine;
     private JPanel chatPanel;
     private JScrollPane scrollPane;
     private JTextField inputField;
@@ -21,7 +21,7 @@ public class ElizaGUI extends JFrame {
     private static final Color SEND_BUTTON = new Color(52, 152, 219);
 
     public ElizaGUI() {
-        engine = new ElizaEngine();
+        engine = new RuleBasedEngine();
         initializeUI();
         addMessage(engine.getGreeting(), true);
     }
