@@ -11,8 +11,8 @@ public class ElizaGUI extends JFrame {
 
     private ElizaEngine engine;
     private JTextArea chatArea;
-    private JTextField inputField;
-    private JButton sendButton;
+    private boolean waitingForInput = true;
+    private String currentLine = "";
 
     public ElizaGUI() {
         engine = new ElizaEngine();
@@ -27,7 +27,7 @@ public class ElizaGUI extends JFrame {
 
         // Create chat area
         chatArea = new JTextArea();
-        chatArea.setEditable(false);
+        chatArea.setEditable(true);
         chatArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
         chatArea.setLineWrap(true);
         chatArea.setWrapStyleWord(true);
@@ -36,62 +36,61 @@ public class ElizaGUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(chatArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        // Create input panel
-        JPanel inputPanel = new JPanel(new BorderLayout(5, 5));
-        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        inputField = new JTextField();
-        inputField.setFont(new Font("Monospaced", Font.PLAIN, 14));
-
-        sendButton = new JButton("Send");
-        sendButton.setFont(new Font("SansSerif", Font.BOLD, 12));
-
-        inputPanel.add(new JLabel("You: "), BorderLayout.WEST);
-        inputPanel.add(inputField, BorderLayout.CENTER);
-        inputPanel.add(sendButton, BorderLayout.EAST);
-
         // Layout
         setLayout(new BorderLayout());
         add(scrollPane, BorderLayout.CENTER);
-        add(inputPanel, BorderLayout.SOUTH);
 
         // Event handlers
-        sendButton.addActionListener(e -> sendMessage());
-        inputField.addActionListener(e -> sendMessage());
+        chatArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER && waitingForInput) {
+                    e.consume();
+                    sendMessage();
+                }
+            }
+        });
 
         // Display greeting
-        appendToChat("ELIZA: " + engine.getGreeting() + "\n\n");
-        inputField.requestFocus();
+        chatArea.append("ELIZA: " + engine.getGreeting() + "\n\nYOU: ");
+        chatArea.setCaretPosition(chatArea.getDocument().getLength());
     }
 
     private void sendMessage() {
-        String userInput = inputField.getText().trim();
+        try {
+            String fullText = chatArea.getText();
+            int lastYouIndex = fullText.lastIndexOf("YOU: ");
 
-        if (userInput.isEmpty()) {
-            return;
+            if (lastYouIndex == -1) {
+                return;
+            }
+
+            String userInput = fullText.substring(lastYouIndex + 5).trim();
+
+            if (userInput.isEmpty()) {
+                return;
+            }
+
+            waitingForInput = false;
+            chatArea.setEditable(false);
+
+            // Get and display response
+            String response = engine.getResponse(userInput);
+            chatArea.append("\n\nELIZA: " + response + "\n\n");
+
+            // Check for shutdown
+            if (response.equals("SHUT UP...")) {
+                return;
+            }
+
+            chatArea.append("YOU: ");
+            chatArea.setCaretPosition(chatArea.getDocument().getLength());
+            chatArea.setEditable(true);
+            waitingForInput = true;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-
-        // Display user input
-        appendToChat("YOU: " + userInput + "\n");
-
-        // Get and display response
-        String response = engine.getResponse(userInput);
-        appendToChat("ELIZA: " + response + "\n\n");
-
-        // Check for shutdown
-        if (response.equals("SHUT UP...")) {
-            inputField.setEnabled(false);
-            sendButton.setEnabled(false);
-        }
-
-        // Clear input
-        inputField.setText("");
-        inputField.requestFocus();
-    }
-
-    private void appendToChat(String text) {
-        chatArea.append(text);
-        chatArea.setCaretPosition(chatArea.getDocument().getLength());
     }
 
     public static void main(String[] args) {
