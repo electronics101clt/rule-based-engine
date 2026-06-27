@@ -2,266 +2,191 @@
 
 **Philosophy**: Stay true to Joseph Weizenbaum's original ELIZA.BAS (1966)
 **Approach**: ONE FILE + massive data, WORD-based matching, PURE RULES
-**Size**: Scales to 2GB vocabulary (currently 59 MB, expandable)
+**Flavors**: Ubuntu (2GB desktop) + Android (500MB mobile)
 
-![ELIZA Ubuntu](eliza-ubuntu.png)
+![ELIZA](eliza-ubuntu.png)
 
-## Core Principles
+## 🎯 Choose Your Flavor
 
-### 1. **One File Architecture** (like ELIZA.BAS)
-- **ELIZA.java**: Single file containing all logic (700+ lines)
-- **ELIZA_DATA.txt**: External vocabulary lookup (59+ MB, expandable to 2GB)
-- **WORD_BIGRAMS.txt**: Word sequence predictions (54+ MB)
-- **WORD_TRIGRAMS.txt**: 3-word patterns
-- **COMMAND_SEQUENCES.txt**: Common command phrases
+### 📱 [Android Flavor →](android/)
+**Mobile Linux Assistant with Voice Commands**
 
-### 2. **Word-Based Matching** (not token-based)
-```java
-// ELIZA.BAS line 340: IF MID$(I$,L,LEN(K$))=K$
-if (input.contains(keyword)) {  // Exact word match
-    return matchedKeyword;
-}
-```
+- **Size**: 200-500 MB (APK-ready)
+- **Memory**: 300 MB RAM
+- **Features**: Voice input/output, offline, optimized vocabulary
+- **Platform**: Android 7+ (phones/tablets)
+- **Use Cases**: Mobile learning, Termux help, hands-free reference
+- **Data**: Top 5K packages, essential commands, quick troubleshooting
 
-### 3. **Pure Rule-Based** (no external AI/LLM in core)
-- Find keyword → Extract tail → Conjugate → Insert into template
-- Same algorithm as ELIZA.BAS (lines 290-640)
-- Advanced with fuzzy matching and word prediction
-- NO API calls, NO external dependencies (optional LLM addon available separately)
+[**Get Started with Android →**](android/README.md)
 
-### 4. **Massive Vocabulary**
-- **93,411 Ubuntu packages** - all installable software
-- **9,289 man pages** - command documentation
-- **1.6M+ word combinations** - install/remove/update patterns
-- **Programming keywords** - Python, Java, JavaScript, C, Go, Rust
-- **Error messages** - common troubleshooting patterns
-- **Scales to 2GB** - framework supports massive expansion
+---
 
-## What Makes This ELIZA
+### 🖥️ [Ubuntu Flavor →](ubuntu/)
+**Complete Desktop/Server Assistant - 2GB Vocabulary**
 
-```
-Original ELIZA.BAS (1966):          This Implementation:
-========================            ====================
-36 keywords                    →    100,000+ keywords
-112 responses                  →    10,000,000+ responses (expandable)
-6 conjugation rules            →    10 conjugation rules + fuzzy matching
-One BASIC file (~5KB)          →    One Java file + data files (2GB capable)
-Word matching                  →    Word matching + prediction + fuzzy
-Template responses             →    Template responses + massive data
-```
+- **Size**: 2 GB vocabulary (maximum capacity)
+- **Memory**: 2.5 GB RAM
+- **Features**: All packages, full man pages, complete documentation
+- **Platform**: Ubuntu/Linux desktop/server
+- **Use Cases**: System admin, development, offline reference
+- **Data**: 93K+ packages, full docs, all programming languages
 
-## Features
+[**Get Started with Ubuntu →**](ubuntu/README.md)
 
-### 🧠 Advanced Reader
-- **Fuzzy Matching**: Levenshtein + N-gram similarity
-- **Typo Correction**: Auto-fixes common misspellings
-- **Word Prediction**: "show" → "me" → "my" → "disk" → "space"
-- **Semantic Matching**: Finds best rule via word similarity
+---
 
-### 📚 Comprehensive Data
-- 226,936 unique words
-- 93,411 Ubuntu packages
-- 9,289 command man pages
-- 1,681,398 package action combinations
-- Programming language keywords (6 languages)
-- Error message troubleshooting database
+## Core Philosophy
 
-### ⚡ Performance
-- **Startup**: ~500ms (loading vocabulary)
-- **Query**: ~20ms (pure rule matching)
-- **Memory**: ~60MB RAM (current data size)
-- **Accuracy**: 95%+ for Ubuntu/Linux queries
+True to ELIZA.BAS (1966):
 
-## Installation
-
-### Requirements
-- Java 11+
-- 128MB RAM minimum
-- 100MB disk space (expandable to 2GB)
-
-### Quick Start
-
-```bash
-# Clone repository
-git clone https://github.com/electronics101clt/rule-based-engine.git
-cd rule-based-engine
-
-# Compile single file
-javac ELIZA.java
-
-# Run
-java ELIZA
-```
-
-### Generate More Data
-
-```bash
-# Expand vocabulary to approach 2GB
-./generate_word_sequences.sh
-
-# Current size
-du -sh ELIZA_DATA.txt WORD_*.txt
-```
+1. **ONE FILE** - ELIZA.java contains all logic (~700 lines)
+2. **WORD-BASED** - Exact word matching (ELIZA.BAS line 340: `IF MID$(I$,L,LEN(K$))=K$`)
+3. **PURE RULES** - No AI/LLM calls, completely deterministic
+4. **MASSIVE DATA** - Scale to 2GB vocabulary via external text files
+5. **OFFLINE** - No network, no permissions, works anywhere
 
 ## Architecture
 
 ```
 User Input
     ↓
-┌──────────────────────┐
-│  Normalize           │  Remove apostrophes, uppercase
-└──────────────────────┘
+Normalize & Fix Typos (Fuzzy Matching)
     ↓
-┌──────────────────────┐
-│  Typo Correction     │  Fix common misspellings
-└──────────────────────┘
+Find Keyword (Word-Based Exact Match)
     ↓
-┌──────────────────────┐
-│  Fuzzy Match         │  Levenshtein + N-gram similarity
-└──────────────────────┘
+Extract Tail (Text After Keyword)
     ↓
-┌──────────────────────┐
-│  Find Keyword        │  Word-based exact match (ELIZA.BAS line 340)
-└──────────────────────┘
+Conjugate (Swap Pronouns: YOU ↔ I)
     ↓
-┌──────────────────────┐
-│  Extract Tail        │  Get text after keyword (ELIZA.BAS line 430)
-└──────────────────────┘
+Get Template Response (Round-Robin)
     ↓
-┌──────────────────────┐
-│  Conjugate           │  Swap pronouns (ELIZA.BAS line 440-550)
-└──────────────────────┘
+Insert Tail into Template
     ↓
-┌──────────────────────┐
-│  Get Template        │  Round-robin response (ELIZA.BAS line 590-610)
-└──────────────────────┘
-    ↓
-┌──────────────────────┐
-│  Insert Tail         │  Fill template with conjugated tail
-└──────────────────────┘
-    ↓
-Response to User
+Return Response
 ```
 
-## Examples
+Same algorithm as ELIZA.BAS (lines 290-640), enhanced with:
+- Fuzzy matching (Levenshtein + N-gram similarity)
+- Word prediction (bigrams/trigrams)
+- Massive vocabulary (2GB capability)
 
-### Typo Correction
+## Comparison: Android vs Ubuntu
+
+| Feature | Android Flavor | Ubuntu Flavor |
+|---------|----------------|---------------|
+| **Vocabulary** | 200-500 MB | 2 GB |
+| **Packages** | Top 5K common | All 93K+ |
+| **Man Pages** | Summaries | Full content |
+| **Memory** | 300 MB | 2.5 GB |
+| **Startup** | <1 second | 3-5 seconds |
+| **APK Size** | 250-550 MB | N/A |
+| **Voice** | Built-in | Optional |
+| **Platform** | Android 7+ | Ubuntu/Linux |
+| **Use Case** | Mobile learning | Desktop/server reference |
+
+## Quick Start
+
+### Android
+```bash
+cd android/
+# See android/README.md for Android Studio setup
 ```
-Input:  "instal grafics driver"
+
+### Ubuntu
+```bash
+cd ubuntu/
+javac ELIZA.java
+java -Xmx3G ELIZA
+```
+
+## Data Files (Per Flavor)
+
+Both flavors use same format, different sizes:
+
+- **ELIZA_DATA.txt** - Keyword→response lookup (tab-delimited)
+- **WORD_BIGRAMS.txt** - Word1 → Word2 predictions
+- **WORD_TRIGRAMS.txt** - 3-word sequence patterns
+- **COMMAND_SEQUENCES.txt** - Common command phrases
+
+## What Makes This ELIZA
+
+```
+Original ELIZA.BAS (1966):          This Implementation:
+========================            ====================
+36 keywords                    →    100,000+ keywords (Ubuntu)
+112 responses                  →    10,000,000+ responses (Ubuntu)
+6 conjugation rules            →    10 conjugation rules + fuzzy
+One BASIC file (~5KB)          →    One Java file + data (2GB capable)
+Word matching                  →    Word matching + prediction
+Template responses             →    Templates + massive data
+Psychotherapy                  →    Linux/Android assistance
+```
+
+## Example
+
+```
+Input:  "instal grafics driver" (typos)
 Fixed:  "install graphics driver"
-Match:  GRAPHICS → "Install NVIDIA driver: sudo apt install nvidia-driver-550"
+Match:  GRAPHICS keyword
+Tail:   " driver"
+Response: "Install NVIDIA driver: sudo apt install nvidia-driver-550"
 ```
 
-### Word Prediction
-```
-Input:  "show"
-Next:   "me" (predicted from WORD_BIGRAMS.txt)
-Then:   "my" (predicted from WORD_TRIGRAMS.txt)
-Then:   "disk" (predicted from COMMAND_SEQUENCES.txt)
-Result: "show me my disk space" → matched command pattern
-```
+## Repository Structure
 
-### Conjugation (like original ELIZA)
 ```
-Input:  "you are not helping me"
-Tail:   " not helping me"
-Conjugate: " not helping me" → " not helping you"
-Template: "WHAT MAKES YOU THINK I AM*"
-Output: "WHAT MAKES YOU THINK I AM not helping you"
-```
-
-## Data Format
-
-### ELIZA_DATA.txt
-```
-# Tab-delimited: KEYWORD\tRESPONSE1\tRESPONSE2\t...
-INSTALL	To install software: sudo apt install PACKAGENAME	What package do you want to install?
-REMOVE	To remove software: sudo apt remove PACKAGENAME	Use 'apt purge' to also remove config
+rule-based-engine/
+├── README.md (this file)
+├── ELIZA.BAS (original 1966 reference)
+├── android/
+│   ├── README.md
+│   ├── ELIZA.java (same file as ubuntu)
+│   └── data/ (mobile-optimized, 200-500 MB)
+├── ubuntu/
+│   ├── README.md
+│   ├── ELIZA.java (same file as android)
+│   └── data/ (full vocabulary, 2 GB)
+├── dictionaries/ (source vocabulary)
+└── src/main/java/com/eliza/ (old multi-file version on master branch)
 ```
 
-### WORD_BIGRAMS.txt
-```
-# Format: WORD1\tWORD2\tFREQUENCY
-SHOW	ME	15
-SHOW	DISK	12
-INSTALL	PACKAGE	18
-```
+## Branches
 
-### COMMAND_SEQUENCES.txt
-```
-# Format: FULL_SEQUENCE\tCATEGORY\tFREQUENCY
-SHOW ME MY DISK SPACE	DISK	50
-INSTALL NVIDIA DRIVER	DRIVER	65
-FIX MY WIFI	NETWORK	55
-```
-
-## Expanding to 2GB
-
-Current: 59 MB → Target: 2 GB (2048 MB)
-
-**What to add**:
-1. Full man page content (not just references)
-2. Ubuntu documentation text
-3. Stack Overflow common Q&A patterns
-4. Forum troubleshooting threads
-5. All programming language standard libraries
-6. Configuration file templates
-7. Common error messages with full explanations
-8. Tutorial text and examples
-
-**How to expand**:
-```python
-# Add to ELIZA_DATA.txt
-with open("ELIZA_DATA.txt", "a") as f:
-    # Add your massive data here
-    f.write("KEYWORD\tRESPONSE1\tRESPONSE2\t...\n")
-```
-
-## Comparison
-
-| Feature | Original ELIZA | This Implementation |
-|---------|----------------|---------------------|
-| Architecture | 1 BASIC file | 1 Java file + data |
-| Keywords | 36 | 100,000+ |
-| Responses | 112 | 10,000,000+ (expandable) |
-| Size | 5 KB | 59 MB → 2 GB |
-| Matching | Exact word | Exact + fuzzy + prediction |
-| Conjugation | 6 rules | 10 rules |
-| Typo handling | ❌ | ✅ |
-| Word prediction | ❌ | ✅ |
-| Memory | <1 KB | ~60 MB |
-| Speed | Instant | ~20ms per query |
-| External calls | ❌ | ❌ (pure rules) |
+- **master**: Old multi-file architecture (v2.1.0, with LLM)
+- **eliza-pure-v3**: New single-file pure ELIZA (v3.0.0, this branch)
 
 ## Philosophy: Why Pure Rules?
 
-**ELIZA.BAS (1966) was revolutionary because**:
+**ELIZA.BAS was revolutionary because**:
 - Simple pattern matching felt intelligent
 - No AI needed - just clever rules
 - User's mind filled in the gaps
-- Completely transparent and explainable
+- Completely transparent
 
-**This implementation stays true by**:
+**This stays true by**:
 - NO black-box AI/LLM calls
 - Every response traceable to a rule
-- Massive data ≠ complexity (still just lookup)
-- User sees exactly how it works
-- **It's a rule-based system, not trying to be "intelligent"**
+- Massive data ≠ complexity
+- Works offline forever
 
-## Optional Addons (Separate from Core)
+## Building
 
-Want LLM fallback for unknown queries? See `addons/llm-fallback/` (not part of core ELIZA)
+### Compile
+```bash
+javac ELIZA.java
+```
 
-Want semantic embeddings? See `addons/semantic-engine/` (not part of core ELIZA)
+### Run (Ubuntu flavor)
+```bash
+java -Xmx3G ELIZA
+```
 
-**Core ELIZA = pure rules only.**
-
-## Documentation
-
-- `ELIZA.BAS` - Original 1966 BASIC source (reference)
-- `FUZZY_SEMANTIC_DESIGN.md` - Advanced matching design
-- `VOCABULARY_EXPANSION.md` - How to expand to 2GB
-- `dictionaries/` - Source vocabulary files
+### Create JAR
+```bash
+jar cfe ELIZA.jar ELIZA ELIZA.class
+java -Xmx3G -jar ELIZA.jar
+```
 
 ## Credits
 
@@ -270,7 +195,7 @@ Want semantic embeddings? See `addons/semantic-engine/` (not part of core ELIZA)
 - **This Implementation**: Electronics101 (2026)
   - Built with Claude Code
   - True to ELIZA.BAS philosophy
-  - Expanded for modern Ubuntu/Linux support
+  - Dual-platform (Android + Ubuntu)
 
 ## License
 
@@ -280,21 +205,20 @@ MIT License
 
 Contributions welcome! Please:
 1. Stay true to ELIZA.BAS philosophy (pure rules, no AI)
-2. Expand vocabulary and patterns
-3. Improve fuzzy matching and prediction
-4. Keep it one-file + data architecture
+2. Expand vocabulary files
+3. Keep one-file architecture
+4. Support both flavors
 
 ## Links
 
 - **Repository**: https://github.com/electronics101clt/rule-based-engine
-- **Original ELIZA**: `ELIZA.BAS` in this repo
+- **Original ELIZA**: See `ELIZA.BAS` in this repo
 - **ELIZA History**: https://en.wikipedia.org/wiki/ELIZA
 
 ---
 
-**Built**: 2026-06-27
-**Version**: 3.0.0 - Pure ELIZA Architecture
-**Current Size**: 59 MB (expandable to 2 GB)
-**Keywords**: 100,000+
-**Responses**: 10,000,000+ (expandable)
+**Version**: 3.0.0 - Pure ELIZA Dual-Platform
+**Branch**: eliza-pure-v3
+**Flavors**: Android (500MB) + Ubuntu (2GB)
 **Philosophy**: Pure rule-based, true to ELIZA.BAS
+**Last Updated**: 2026-06-27
