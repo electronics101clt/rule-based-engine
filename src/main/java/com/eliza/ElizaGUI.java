@@ -3,6 +3,7 @@ package com.eliza;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 /**
  * ELIZA GUI - Modern chat bubble interface
@@ -120,8 +121,31 @@ public class ElizaGUI extends JFrame {
         ChatBubble bubble = new ChatBubble(message, isEliza);
 
         if (isEliza) {
-            // Left align for ELIZA
+            // Left align for Assistant
             messageWrapper.add(bubble);
+
+            // Check if message contains executable commands
+            List<String> commands = CommandExecutor.extractCommands(message);
+            if (!commands.isEmpty()) {
+                JButton runButton = new JButton("▶ Run");
+                runButton.setFont(new Font("SansSerif", Font.BOLD, 11));
+                runButton.setBackground(new Color(76, 175, 80));
+                runButton.setForeground(Color.WHITE);
+                runButton.setFocusPainted(false);
+                runButton.setBorderPainted(false);
+                runButton.setPreferredSize(new Dimension(70, 30));
+                runButton.setMaximumSize(new Dimension(70, 30));
+                runButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                runButton.setMargin(new Insets(5, 10, 5, 10));
+
+                runButton.addActionListener(e -> {
+                    showCommandExecutionDialog(commands);
+                });
+
+                messageWrapper.add(Box.createRigidArea(new Dimension(10, 0)));
+                messageWrapper.add(runButton);
+            }
+
             messageWrapper.add(Box.createHorizontalGlue());
         } else {
             // Right align for USER
@@ -137,6 +161,56 @@ public class ElizaGUI extends JFrame {
             JScrollBar vertical = scrollPane.getVerticalScrollBar();
             vertical.setValue(vertical.getMaximum());
         });
+    }
+
+    private void showCommandExecutionDialog(List<String> commands) {
+        // Create selection dialog
+        String[] commandArray = commands.toArray(new String[0]);
+
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JLabel label = new JLabel("Select command to execute:");
+        panel.add(label, BorderLayout.NORTH);
+
+        JList<String> commandList = new JList<>(commandArray);
+        commandList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        commandList.setSelectedIndex(0);
+        JScrollPane listScroll = new JScrollPane(commandList);
+        listScroll.setPreferredSize(new Dimension(400, 100));
+        panel.add(listScroll, BorderLayout.CENTER);
+
+        JLabel warning = new JLabel("⚠️ Review command carefully before executing!");
+        warning.setForeground(new Color(255, 152, 0));
+        panel.add(warning, BorderLayout.SOUTH);
+
+        int result = JOptionPane.showConfirmDialog(
+            this,
+            panel,
+            "Execute Command?",
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION && commandList.getSelectedValue() != null) {
+            executeCommand(commandList.getSelectedValue());
+        }
+    }
+
+    private void executeCommand(String command) {
+        // Show executing message
+        addMessage("Executing: " + command, false);
+
+        // Execute in background thread
+        new Thread(() -> {
+            CommandExecutor.CommandResult result = CommandExecutor.execute(command);
+
+            // Display result in chat
+            SwingUtilities.invokeLater(() -> {
+                String resultMessage = result.getFormattedOutput();
+                addMessage(resultMessage, true);
+            });
+        }).start();
     }
 
     private void sendMessage() {
