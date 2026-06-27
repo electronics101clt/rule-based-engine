@@ -10,11 +10,15 @@ public class UbuntuAssistant {
     private List<Rule> rules;
     private ConversationContext context;
     private Random random;
+    private LLMConfig llmConfig;
+    private LLMProvider llmProvider;
 
     public UbuntuAssistant() {
         this.rules = new ArrayList<>();
         this.context = new ConversationContext();
         this.random = new Random();
+        this.llmConfig = new LLMConfig();
+        this.llmProvider = new LLMProvider(llmConfig);
         initializeRules();
     }
 
@@ -45,7 +49,17 @@ public class UbuntuAssistant {
                 context.setCurrentTopic(selectedRule.getTopic());
             }
         } else {
-            response = getDefaultResponse();
+            // Try LLM fallback if enabled
+            if (llmConfig.isLLMEnabled()) {
+                String llmResponse = llmProvider.query(input);
+                if (llmResponse != null && !llmResponse.isEmpty()) {
+                    response = "🤖 " + llmResponse;
+                } else {
+                    response = getDefaultResponse();
+                }
+            } else {
+                response = getDefaultResponse();
+            }
         }
 
         // Store in history
@@ -1484,5 +1498,9 @@ private void initializeUserPermissionRules() {
 }
     public ConversationContext getContext() {
         return context;
+    }
+
+    public LLMConfig getLLMConfig() {
+        return llmConfig;
     }
 }

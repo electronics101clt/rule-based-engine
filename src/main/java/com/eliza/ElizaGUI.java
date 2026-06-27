@@ -33,6 +33,15 @@ public class ElizaGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        // Menu bar
+        JMenuBar menuBar = new JMenuBar();
+        JMenu settingsMenu = new JMenu("Settings");
+        JMenuItem llmSettingsItem = new JMenuItem("LLM Configuration...");
+        llmSettingsItem.addActionListener(e -> showSettingsDialog());
+        settingsMenu.add(llmSettingsItem);
+        menuBar.add(settingsMenu);
+        setJMenuBar(menuBar);
+
         // Main container
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(BG_COLOR);
@@ -211,6 +220,11 @@ public class ElizaGUI extends JFrame {
                 addMessage(resultMessage, true);
             });
         }).start();
+    }
+
+    private void showSettingsDialog() {
+        SettingsDialog dialog = new SettingsDialog(this, engine.getLLMConfig());
+        dialog.setVisible(true);
     }
 
     private void sendMessage() {
