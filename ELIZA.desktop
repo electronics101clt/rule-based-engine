@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=ELIZA
+Comment=ELIZA Rogerian Psychotherapist Chatbot
+Exec=java -jar /home/jonathan/Desktop/rule-based-engine/ELIZA.jar
+Path=/home/jonathan/Desktop/rule-based-engine
+Terminal=false
+Categories=Application;Education;
