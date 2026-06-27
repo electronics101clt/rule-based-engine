@@ -9,7 +9,7 @@ import java.awt.event.*;
  */
 public class ElizaGUI extends JFrame {
 
-    private RuleBasedEngine engine;
+    private UbuntuAssistant engine;
     private JPanel chatPanel;
     private JScrollPane scrollPane;
     private JTextField inputField;
@@ -21,13 +21,13 @@ public class ElizaGUI extends JFrame {
     private static final Color SEND_BUTTON = new Color(52, 152, 219);
 
     public ElizaGUI() {
-        engine = new RuleBasedEngine();
+        engine = new UbuntuAssistant();
         initializeUI();
         addMessage(engine.getGreeting(), true);
     }
 
     private void initializeUI() {
-        setTitle("ELIZA - AI Therapist");
+        setTitle("Ubuntu Assistant");
         setSize(700, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -42,12 +42,12 @@ public class ElizaGUI extends JFrame {
         headerPanel.setPreferredSize(new Dimension(0, 60));
         headerPanel.setLayout(new BorderLayout());
 
-        JLabel titleLabel = new JLabel("ELIZA");
+        JLabel titleLabel = new JLabel("Ubuntu Assistant");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
 
-        JLabel subtitleLabel = new JLabel("Your AI Therapist");
+        JLabel subtitleLabel = new JLabel("Linux Help & Support");
         subtitleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         subtitleLabel.setForeground(new Color(200, 220, 240));
         subtitleLabel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));

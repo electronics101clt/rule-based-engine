@@ -19,7 +19,7 @@ public class RuleBasedEngine {
     }
 
     public String getGreeting() {
-        return "Hi! I'm ELIZA. What's on your mind today?";
+        return "Hi! I'm your Ubuntu assistant. I can help you with Linux commands, troubleshooting, software installation, and general questions. What can I help you with?";
     }
 
     public String getResponse(String input) {
@@ -74,24 +74,64 @@ public class RuleBasedEngine {
     }
 
     private void initializeRules() {
-        initializeEmotionalRules();
-        initializeRelationshipRules();
-        initializeFamilyRules();
-        initializeWorkRules();
-        initializeMentalHealthRules();
-        initializeCognitiveRules();
-        initializeFollowUpRules();
+        initializeGreetingRules();
+        initializeCommandHelpRules();
+        initializeFileSystemRules();
+        initializePackageManagementRules();
+        initializeSystemInfoRules();
+        initializeNetworkingRules();
+        initializeTroubleshootingRules();
+        initializeSoftwareRules();
+        initializeGeneralConversationRules();
         initializeContextualRules();
-
-        // Extended rule sets for comprehensive coverage
-        initializeExtendedEmotionalRules();
-        initializeExtendedRelationshipRules();
-        initializeExtendedFamilyRules();
-        initializeExtendedWorkRules();
-        initializeExtendedMentalHealthRules();
     }
 
-    private void initializeEmotionalRules() {
+    private void initializeGreetingRules() {
+        // HELLO/HI
+        Rule hello = new Rule("hello", 95);
+        hello.addPattern("HELLO");
+        hello.addPattern("HI ");
+        hello.addPattern("HEY");
+        hello.addPattern("GREETINGS");
+        hello.addPattern("GOOD MORNING");
+        hello.addPattern("GOOD AFTERNOON");
+        hello.addPattern("GOOD EVENING");
+        hello.addResponse("Hello! How can I assist you with Ubuntu today?");
+        hello.addResponse("Hi there! What would you like help with?");
+        hello.addResponse("Hey! I'm here to help with any Ubuntu questions.");
+        hello.addResponse("Greetings! What brings you here?");
+        hello.addResponse("Hello! Need help with a command or system issue?");
+        hello.setTopic("greeting");
+        rules.add(hello);
+
+        // THANK YOU
+        Rule thanks = new Rule("thanks", 90);
+        thanks.addPattern("THANK");
+        thanks.addPattern("THANKS");
+        thanks.addPattern("APPRECIATE");
+        thanks.addResponse("You're welcome!");
+        thanks.addResponse("Happy to help!");
+        thanks.addResponse("No problem! Let me know if you need anything else.");
+        thanks.addResponse("Glad I could assist!");
+        thanks.addResponse("Anytime!");
+        thanks.setTopic("gratitude");
+        rules.add(thanks);
+
+        // GOODBYE
+        Rule goodbye = new Rule("goodbye", 90);
+        goodbye.addPattern("BYE");
+        goodbye.addPattern("GOODBYE");
+        goodbye.addPattern("SEE YOU");
+        goodbye.addPattern("LATER");
+        goodbye.addResponse("Goodbye! Feel free to come back anytime.");
+        goodbye.addResponse("See you! Good luck with your Ubuntu setup.");
+        goodbye.addResponse("Take care! Let me know if you need more help.");
+        goodbye.addResponse("Bye! Happy computing!");
+        goodbye.setTopic("farewell");
+        rules.add(goodbye);
+    }
+
+    private void initializeCommandHelpRules() {
         // DEPRESSION - High priority, multi-turn conversation
         Rule depressionFirst = new Rule("depression-first", 90);
         depressionFirst.addPattern("DEPRESSED");
