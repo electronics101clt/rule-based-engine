@@ -1,9 +1,10 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=ELIZA
-Comment=ELIZA Rogerian Psychotherapist Chatbot
-Exec=java -jar /home/jonathan/Desktop/rule-based-engine/ELIZA.jar
-Path=/home/jonathan/Desktop/rule-based-engine
+Name=Ubuntu Assistant
+Comment=AI-powered Ubuntu/Linux Assistant with 1GB Natural Language Understanding
+Exec=java -jar /home/jonathan/rule-based-engine/ELIZA.jar
+Path=/home/jonathan/rule-based-engine
+Icon=/home/jonathan/rule-based-engine/eliza-ubuntu.png
 Terminal=false
-Categories=Application;Education;
+Categories=Application;System;Utility;

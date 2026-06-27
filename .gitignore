@@ -1,0 +1,27 @@
+# Embeddings (too large for git)
+embeddings/*.txt
+embeddings/*.bin
+embeddings/*.gz
+embeddings/*.zip
+
+# Compiled classes
+*.class
+bin/
+
+# Test files
+Test*.java
+Test*.class
+
+# Temporary files
+*.tmp
+*.log
+.output
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db

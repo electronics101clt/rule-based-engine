@@ -1,0 +1,172 @@
+┌──────────────────────────────────────────────────────────────┐
+│            ELIZA ALGORITHM COMPARISON                        │
+└──────────────────────────────────────────────────────────────┘
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ORIGINAL ELIZA ENGINE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Input: "I want to setup chrome"
+
+Step 1: Uppercase + pad spaces
+   → " I WANT TO SETUP CHROME  "
+
+Step 2: Loop keywords[0..35]
+   keywords[0] = "CAN YOU" → indexOf() → NOT FOUND
+   keywords[1] = "CAN I" → indexOf() → NOT FOUND
+   ...
+   keywords[13] = "I WANT" → indexOf() → FOUND at pos 1
+   → BREAK (first match wins)
+
+Step 3: Extract right part
+   rightPart = " TO SETUP CHROME  "
+
+Step 4: Apply conjugations (none match)
+
+Step 5: Get reply
+   replyStart[13] = 34
+   replyIndex[13] = 0
+   replies[34][0] = "WHY DO YOU WANT*"
+
+Step 6: Append conjugated text
+   → "WHY DO YOU WANT TO SETUP CHROME"
+
+PROBLEMS:
+  ❌ Missed "SETUP" (synonym of install)
+  ❌ Missed "CHROME" (browser software)
+  ❌ First match breaks - no scoring
+  ❌ "I WANT" is vague psychotherapy pattern
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ BASIC UBUNTU ASSISTANT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Input: "I want to setup chrome"
+
+Step 1: Loop ALL rules
+   Rule[0] "hello" → patterns["HELLO","HI "] → NO MATCH
+   Rule[1] "thanks" → patterns["THANK"] → NO MATCH
+   ...
+   Rule[15] "apt-install" → patterns["INSTALL"] → NO MATCH ❌
+   Rule[42] "browser" → patterns["CHROME"] → MATCH ✓
+   → Keep looping
+
+Step 2: Collect matching rules
+   matchingRules = [Rule[42] "browser"]
+
+Step 3: Sort by priority
+   browser.priority = 80
+   (only one match)
+
+Step 4: Return response
+   → "Ubuntu comes with Firefox. Install Chrome..."
+
+PROBLEMS:
+  ❌ Missed "SETUP" (not in patterns)
+  ✓ Found "CHROME"
+  ❌ Only matched browser, not install command
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ADVANCED MATCHER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Input: "I want to setup chrome"
+
+Step 1: Loop ALL rules, ALL patterns, ALL synonyms
+
+   Rule "apt-install"
+     Pattern "INSTALL" → NO MATCH
+     Synonyms: ["SETUP","ADD","GET"]
+       → "SETUP" MATCH at pos 11 ✓
+         score = 90×10 + 1×5 + (1000-11) + 0 = 1884
+
+   Rule "browser"
+     Pattern "CHROME" → MATCH at pos 17 ✓
+       score = 80×10 + 1×5 + (1000-17) + 0 = 1788
+     Pattern "FIREFOX" → NO MATCH
+
+   Rule "help-vague"
+     Pattern "HOW DO I" → NO MATCH
+     Pattern "WHAT" → NO MATCH
+
+Step 2: Collect scored matches
+   matches = [
+     ScoredMatch(rule="apt-install", score=1884, pattern="SETUP"),
+     ScoredMatch(rule="browser", score=1788, pattern="CHROME")
+   ]
+
+Step 3: Sort by score DESC
+   [1884, 1788]
+
+Step 4: Pick highest
+   → apt-install (score 1884)
+
+Step 5: Return response
+   → "Install software with 'sudo apt install packagename'..."
+
+ADVANTAGES:
+  ✓ Matched "SETUP" via synonym
+  ✓ Found multiple matches
+  ✓ Scored and ranked them
+  ✓ Picked best match (install > browser)
+  ✓ Shows debug alternatives
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ SCORING BREAKDOWN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Example: "install nvidia driver"
+
+Match 1: "INSTALL NVIDIA DRIVER" (exact 3-word phrase)
+  basePriority = 90
+  wordCount = 3
+  position = 0
+  exactPhrase = true
+
+  score = 90×10 + 3×5 + (1000-0) + 20 = 1935
+
+Match 2: "NVIDIA DRIVER" (2-word phrase)
+  basePriority = 85
+  wordCount = 2
+  position = 8
+
+  score = 85×10 + 2×5 + (1000-8) + 20 = 1872
+
+Match 3: "INSTALL" (1-word)
+  basePriority = 90
+  wordCount = 1
+  position = 0
+
+  score = 90×10 + 1×5 + (1000-0) + 0 = 1895
+
+Winner: "INSTALL NVIDIA DRIVER" (1935)
+  → Most specific match wins
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ SYNONYM EXPANSION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+User says: "setup"
+System checks:
+  ✓ INSTALL
+  ✓ SETUP    ← matched
+  ✓ ADD
+  ✓ GET
+  ✓ DOWNLOAD
+
+User says: "erase"
+System checks:
+  ✓ REMOVE
+  ✓ UNINSTALL
+  ✓ DELETE
+  ✓ PURGE
+  ✓ ERASE    ← matched
+
+User says: "sluggish"
+System checks:
+  ✓ SLOW
+  ✓ SLUGGISH ← matched
+  ✓ LAGGY
+  ✓ UNRESPONSIVE
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

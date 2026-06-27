@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class UbuntuAssistant {
 
-    private List<Rule> rules;
+    protected List<Rule> rules;
     private ConversationContext context;
     private Random random;
     private LLMConfig llmConfig;
@@ -106,6 +106,7 @@ public class UbuntuAssistant {
         initializePrinterScannerRules();
         initializeBluetoothRules();
         initializeUserPermissionRules();
+        initializeAmbiguousQuestionRules();
     }
 
     private void initializeGreetingRules() {
@@ -1496,6 +1497,139 @@ private void initializeUserPermissionRules() {
     homeDir.setTopic("users");
     rules.add(homeDir);
 }
+
+private void initializeAmbiguousQuestionRules() {
+    // VAGUE/UNCLEAR REQUESTS - ELIZA-style clarification patterns
+    // These have LOWER priority so specific rules match first
+
+    // "help" alone
+    Rule helpVague = new Rule("help-vague", 50);
+    helpVague.addPattern(" HELP ");
+    helpVague.addResponse("I'm here to help! What's your question?");
+    helpVague.addResponse("Tell me more about what you're trying to do.");
+    helpVague.addResponse("What do you need help with specifically?");
+    helpVague.addResponse("I can help with commands, troubleshooting, software installation, and more. What's on your mind?");
+    helpVague.setTopic("clarification");
+    rules.add(helpVague);
+
+    // "it doesn't work" / "broken" / "not working"
+    Rule notWorking = new Rule("not-working", 55);
+    notWorking.addPattern("DOESN'T WORK");
+    notWorking.addPattern("NOT WORKING");
+    notWorking.addPattern("BROKEN");
+    notWorking.addPattern("BROKE");
+    notWorking.addPattern("ISN'T WORKING");
+    notWorking.addResponse("What isn't working? Let me know what you're trying to do.");
+    notWorking.addResponse("Tell me more about what's broken - what were you trying when it stopped working?");
+    notWorking.addResponse("I'd like to help! What specifically isn't working?");
+    notWorking.addResponse("Can you describe what's happening? Any error messages?");
+    notWorking.setTopic("clarification");
+    rules.add(notWorking);
+
+    // "slow" without context
+    Rule slowVague = new Rule("slow-vague", 55);
+    slowVague.addPattern(" SLOW ");
+    slowVague.addPattern("RUNNING SLOW");
+    slowVague.addResponse("What's running slow - your whole system, a specific app, or boot time?");
+    slowVague.addResponse("Slow system? Let's narrow it down - is it CPU, RAM, disk, or network related?");
+    slowVague.addResponse("Tell me more about the slowness you're experiencing.");
+    slowVague.setTopic("clarification");
+    rules.add(slowVague);
+
+    // "configure" / "change" / "fix" without object
+    Rule configureVague = new Rule("configure-vague", 45);
+    configureVague.addPattern("CONFIGURE ");
+    configureVague.addPattern("CHANGE MY ");
+    configureVague.addPattern("FIX MY ");
+    configureVague.addPattern("SET UP ");
+    configureVague.addResponse("What would you like to configure?");
+    configureVague.addResponse("Tell me more about what you're trying to change.");
+    configureVague.addResponse("I can help you configure that. What specifically do you want to set up?");
+    configureVague.addResponse("What would you like to change?");
+    configureVague.setTopic("clarification");
+    rules.add(configureVague);
+
+    // "nothing much" / casual responses
+    Rule casualResponse = new Rule("casual", 60);
+    casualResponse.addPattern("NOTHING MUCH");
+    casualResponse.addPattern("NOT MUCH");
+    casualResponse.addPattern("NOTHING REALLY");
+    casualResponse.addPattern("JUST LOOKING");
+    casualResponse.addPattern("JUST CHECKING");
+    casualResponse.addResponse("No problem! Let me know if you need help with anything.");
+    casualResponse.addResponse("Alright! I'm here if you have any Ubuntu questions.");
+    casualResponse.addResponse("Feel free to ask if you need any help!");
+    casualResponse.setTopic("casual");
+    rules.add(casualResponse);
+
+    // "error" without details
+    Rule errorVague = new Rule("error-vague", 55);
+    errorVague.addPattern(" ERROR ");
+    errorVague.addPattern("ERROR MESSAGE");
+    errorVague.addPattern("GOT AN ERROR");
+    errorVague.addResponse("What's the error message? Copy and paste it if you can.");
+    errorVague.addResponse("Can you share the full error message? That'll help me understand the issue.");
+    errorVague.addResponse("Tell me about the error - what were you doing when it appeared?");
+    errorVague.setTopic("clarification");
+    rules.add(errorVague);
+
+    // "why" questions without context
+    Rule whyVague = new Rule("why-vague", 45);
+    whyVague.addPattern("WHY IS ");
+    whyVague.addPattern("WHY DOES ");
+    whyVague.addPattern("WHY WON'T ");
+    whyVague.addPattern("WHY CAN'T ");
+    whyVague.addResponse("Let me help you understand. What specifically are you asking about?");
+    whyVague.addResponse("That's a good question! Give me more context and I'll explain.");
+    whyVague.addResponse("Tell me more about what you're seeing.");
+    whyVague.setTopic("clarification");
+    rules.add(whyVague);
+
+    // "how" questions without context
+    Rule howVague = new Rule("how-vague", 45);
+    howVague.addPattern("HOW DO I ");
+    howVague.addPattern("HOW CAN I ");
+    howVague.addPattern("HOW TO ");
+    howVague.addResponse("How do you... do what? Tell me what you're trying to accomplish.");
+    howVague.addResponse("I can show you how! What are you trying to do?");
+    howVague.addResponse("What would you like to know how to do?");
+    howVague.setTopic("clarification");
+    rules.add(howVague);
+
+    // "install" / "uninstall" without specifying what
+    Rule installWhat = new Rule("install-what", 50);
+    installWhat.addPattern("INSTALL ");
+    installWhat.addPattern("UNINSTALL ");
+    installWhat.addPattern("REMOVE ");
+    installWhat.addResponse("What would you like to install?");
+    installWhat.addResponse("Which software are you looking to install?");
+    installWhat.addResponse("Tell me what you want to install and I'll show you how.");
+    installWhat.setTopic("clarification");
+    rules.add(installWhat);
+
+    // "problem" / "issue" without details
+    Rule problemVague = new Rule("problem-vague", 55);
+    problemVague.addPattern(" PROBLEM ");
+    problemVague.addPattern(" ISSUE ");
+    problemVague.addPattern("HAVING TROUBLE");
+    problemVague.addResponse("What kind of problem are you experiencing?");
+    problemVague.addResponse("Tell me about the issue you're having.");
+    problemVague.addResponse("I'm here to help with your problem! What's going on?");
+    problemVague.setTopic("clarification");
+    rules.add(problemVague);
+
+    // "what is" / "tell me about" - general knowledge
+    Rule whatIsGeneral = new Rule("what-is-general", 50);
+    whatIsGeneral.addPattern("WHAT IS ");
+    whatIsGeneral.addPattern("TELL ME ABOUT ");
+    whatIsGeneral.addPattern("EXPLAIN ");
+    whatIsGeneral.addResponse("What would you like to know about?");
+    whatIsGeneral.addResponse("I can explain that! What topic are you interested in?");
+    whatIsGeneral.addResponse("What would you like me to tell you about?");
+    whatIsGeneral.setTopic("clarification");
+    rules.add(whatIsGeneral);
+}
+
     public ConversationContext getContext() {
         return context;
     }
