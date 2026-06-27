@@ -1,0 +1,8 @@
+# Vocabulary data files - generate locally
+# These files are 2GB total and exceed GitHub's 100MB file limit
+# Run ../generate_full_vocab.sh to create them locally
+
+WORD_BIGRAMS.txt
+WORD_TRIGRAMS.txt
+ELIZA_DATA.txt
+COMMAND_SEQUENCES.txt
