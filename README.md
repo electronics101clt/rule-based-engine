@@ -1,6 +1,6 @@
 # Ubuntu Assistant - 1.8GB Natural Language Understanding System
 
-AI-powered Ubuntu/Linux assistant with comprehensive natural language understanding.
+AI-powered Ubuntu/Linux assistant with comprehensive natural language understanding across all technical domains.
 
 ![Ubuntu Assistant](eliza-ubuntu.png)
 
@@ -8,13 +8,15 @@ AI-powered Ubuntu/Linux assistant with comprehensive natural language understand
 
 Transformed from classic ELIZA pattern matcher into a modern NLU system with:
 - **400,000-word vocabulary** (GloVe word embeddings)
-- **204,166 Ubuntu-specific terms** (packages, commands, technical)
+- **226,936 Ubuntu-specific terms** (packages, commands, technical)
+- **146 comprehensive pattern rules** (32.7% increase)
 - **Fuzzy matching** (typo correction, Levenshtein distance)
 - **Semantic similarity** (cosine distance, word embeddings)
 - **Multi-pattern scoring** (composite algorithm)
 - **LLM fallback** (Gemini API for unknown queries)
 
 **Match accuracy: 60% → 95%** (with LLM fallback)
+**Technical coverage: 14 major domains**
 
 ## Features
 
@@ -25,11 +27,27 @@ Transformed from classic ELIZA pattern matcher into a modern NLU system with:
 - **Context Tracking**: Conversation history and topic detection
 
 ### 📚 Comprehensive Vocabulary
-- 204,166 unique words (master vocabulary)
+- 226,936 unique words (master vocabulary)
 - 93,411 Ubuntu packages
 - 4,228 system commands
-- 280 technical terms
+- 2,770 technical terms across 14 domains
 - 72 typo corrections
+
+### 🎯 Technical Domain Coverage
+- **Programming**: Python, Java, JavaScript, C/C++, Rust, Go, PHP, Ruby
+- **Development**: Git, Docker, Kubernetes, VS Code, Vim, tmux
+- **Web Servers**: Nginx, Apache, SSL/TLS, reverse proxy
+- **Databases**: MySQL, PostgreSQL, MongoDB, Redis
+- **Cloud/DevOps**: AWS, Terraform, Ansible, infrastructure as code
+- **Gaming**: Steam, Proton, Wine, Lutris, controllers
+- **AI/ML**: TensorFlow, PyTorch, Jupyter, CUDA
+- **Hardware**: CPU, memory, graphics cards, peripherals
+- **Office**: LibreOffice, PDF tools, document processing
+- **Security**: Firewall, SSH, encryption, GPG, LUKS
+- **Networking**: VPN, DNS, protocols, configuration
+- **Desktop**: GNOME, KDE, Wayland, X11, themes
+- **Multimedia**: FFmpeg, VLC, audio/video editing
+- **System Admin**: systemd, cron, logging, users
 
 ### ⚡ Performance
 - **Startup**: ~2.5 seconds (loading embeddings)
@@ -153,6 +171,7 @@ Edit `~/.ubuntu-assistant/config.json`:
 
 ## Documentation
 
+- [VOCABULARY_EXPANSION.md](VOCABULARY_EXPANSION.md) - **Latest expansion details** (v2.1.0)
 - [COMPREHENSIVE_SYSTEM.md](COMPREHENSIVE_SYSTEM.md) - Full architecture
 - [FUZZY_SEMANTIC_DESIGN.md](FUZZY_SEMANTIC_DESIGN.md) - Design specifications
 - [ADVANCED_ELIZA_ALGORITHM.md](ADVANCED_ELIZA_ALGORITHM.md) - Algorithm details
@@ -160,9 +179,11 @@ Edit `~/.ubuntu-assistant/config.json`:
 
 ## Performance Comparison
 
-| Feature | Original ELIZA | Ubuntu Assistant | Full System (1.8GB) |
-|---------|---------------|------------------|---------------------|
-| Vocabulary | 36 keywords | 500+ patterns | 400,000 words |
+| Feature | Original ELIZA | Basic Assistant | Full System (1.8GB) |
+|---------|---------------|-----------------|---------------------|
+| Vocabulary | 36 keywords | 500+ patterns | 226,936 words |
+| Pattern Rules | ~20 rules | 110 rules | **146 rules** |
+| Technical Domains | 1 (general) | 8 domains | **14 domains** |
 | Typo handling | ❌ | ❌ | ✅ (72 + auto) |
 | Semantic | ❌ | ❌ | ✅ (embeddings) |
 | Synonyms | ❌ | Manual (22) | ✅ (automatic) |
@@ -211,5 +232,7 @@ Contributions welcome! Please submit pull requests or open issues.
 ---
 
 **Built**: 2026-06-27
-**Version**: 2.0.0
+**Version**: 2.1.0 - Massively Expanded Edition
 **Size**: 1.8GB (with embeddings)
+**Pattern Rules**: 146 (+36 from v2.0.0)
+**Vocabulary**: 226,936 unique terms (+22,770 from v2.0.0)

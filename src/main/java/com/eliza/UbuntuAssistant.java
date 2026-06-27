@@ -107,6 +107,18 @@ public class UbuntuAssistant {
         initializeBluetoothRules();
         initializeUserPermissionRules();
         initializeAmbiguousQuestionRules();
+
+        // Expanded technical domains
+        initializeProgrammingLanguageRules();
+        initializeDevelopmentToolRules();
+        initializeWebServerRules();
+        initializeDatabaseRules();
+        initializeCloudDevOpsRules();
+        initializeGamingRules();
+        initializeAIMLRules();
+        initializeHardwareRules();
+        initializeOfficeProductivityRules();
+        initializeSecurityRules();
     }
 
     private void initializeGreetingRules() {
@@ -1629,6 +1641,461 @@ private void initializeAmbiguousQuestionRules() {
     whatIsGeneral.setTopic("clarification");
     rules.add(whatIsGeneral);
 }
+
+    private void initializeProgrammingLanguageRules() {
+        // PYTHON
+        Rule python = new Rule("python", 85);
+        python.addPattern("PYTHON");
+        python.addPattern("PIP ");
+        python.addPattern("VIRTUALENV");
+        python.addPattern("VENV");
+        python.addPattern("CONDA");
+        python.addResponse("Python: Install with 'sudo apt install python3 python3-pip'. Create virtual env: 'python3 -m venv myenv'");
+        python.addResponse("For Python development: pip3 (package manager), venv (virtual environments), python3-dev (development headers)");
+        python.addResponse("Python virtual environment: 'python3 -m venv env && source env/bin/activate'. Install packages: 'pip install package_name'");
+        python.setTopic("programming");
+        rules.add(python);
+
+        // JAVASCRIPT / NODE
+        Rule nodejs = new Rule("nodejs", 85);
+        nodejs.addPattern("JAVASCRIPT");
+        nodejs.addPattern("NODE");
+        nodejs.addPattern("NODEJS");
+        nodejs.addPattern("NPM");
+        nodejs.addPattern("YARN");
+        nodejs.addResponse("Node.js: Install with 'sudo apt install nodejs npm'. Use nvm for version management: 'nvm install node'");
+        nodejs.addResponse("JavaScript runtime: npm (package manager), node (runtime). Install packages: 'npm install package'");
+        nodejs.addResponse("Modern Node setup: Use nvm for version management. 'npm init' to start a project, 'package.json' for dependencies");
+        nodejs.setTopic("programming");
+        rules.add(nodejs);
+
+        // JAVA
+        Rule java = new Rule("java", 85);
+        java.addPattern(" JAVA ");
+        java.addPattern("JDK");
+        java.addPattern("JRE");
+        java.addPattern("MAVEN");
+        java.addPattern("GRADLE");
+        java.addResponse("Java: Install OpenJDK with 'sudo apt install openjdk-17-jdk'. Check version: 'java -version'");
+        java.addResponse("Java development: JDK (development kit), JRE (runtime), Maven/Gradle (build tools)");
+        java.addResponse("Java build tools: Maven ('mvn clean install') or Gradle ('gradle build'). IDE: IntelliJ IDEA or Eclipse");
+        java.setTopic("programming");
+        rules.add(java);
+
+        // C/C++
+        Rule cpp = new Rule("cpp", 85);
+        cpp.addPattern(" C ");
+        cpp.addPattern("CPP");
+        cpp.addPattern("C++");
+        cpp.addPattern("GCC");
+        cpp.addPattern("G++");
+        cpp.addPattern("CLANG");
+        cpp.addPattern("CMAKE");
+        cpp.addResponse("C/C++: Install with 'sudo apt install build-essential'. Includes gcc, g++, make");
+        cpp.addResponse("Compile C: 'gcc file.c -o output'. C++: 'g++ file.cpp -o output'. Debug: 'gdb ./output'");
+        cpp.addResponse("Modern C++ build: CMake ('cmake . && make'). Debugger: gdb, Profiler: valgrind");
+        cpp.setTopic("programming");
+        rules.add(cpp);
+
+        // RUST
+        Rule rust = new Rule("rust", 85);
+        rust.addPattern("RUST");
+        rust.addPattern("CARGO");
+        rust.addPattern("RUSTC");
+        rust.addResponse("Rust: Install with 'curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh'");
+        rust.addResponse("Rust development: cargo (package manager & build tool), rustc (compiler). New project: 'cargo new myproject'");
+        rust.addResponse("Cargo commands: 'cargo build' (compile), 'cargo run' (build & run), 'cargo test' (tests)");
+        rust.setTopic("programming");
+        rules.add(rust);
+
+        // GO
+        Rule golang = new Rule("golang", 85);
+        golang.addPattern(" GO ");
+        golang.addPattern("GOLANG");
+        golang.addPattern("GO LANG");
+        golang.addResponse("Go: Install with 'sudo apt install golang'. Set GOPATH in ~/.profile: export GOPATH=$HOME/go");
+        golang.addResponse("Go development: 'go mod init' (new module), 'go build' (compile), 'go run' (build & execute)");
+        golang.addResponse("Go tools: go fmt (formatting), go test (testing), go get (dependencies)");
+        golang.setTopic("programming");
+        rules.add(golang);
+
+        // PHP
+        Rule php = new Rule("php", 85);
+        php.addPattern("PHP");
+        php.addPattern("COMPOSER");
+        php.addPattern("LARAVEL");
+        php.addResponse("PHP: Install with 'sudo apt install php php-cli php-fpm'. Web server: php-fpm with nginx/apache");
+        php.addResponse("PHP package manager Composer: 'sudo apt install composer'. Laravel: 'composer create-project laravel/laravel myapp'");
+        php.addResponse("PHP development: composer (dependencies), php-fpm (FastCGI), php.ini (configuration)");
+        php.setTopic("programming");
+        rules.add(php);
+
+        // RUBY
+        Rule ruby = new Rule("ruby", 85);
+        ruby.addPattern("RUBY");
+        ruby.addPattern("RAILS");
+        ruby.addPattern("GEM");
+        ruby.addResponse("Ruby: Install with 'sudo apt install ruby-full'. Package manager: gem. Version manager: rbenv or rvm");
+        ruby.addResponse("Ruby on Rails: 'gem install rails'. New project: 'rails new myapp'. Server: 'rails server'");
+        ruby.addResponse("Ruby tools: gem (packages), bundler (dependency management), rake (task runner)");
+        ruby.setTopic("programming");
+        rules.add(ruby);
+    }
+
+    private void initializeDevelopmentToolRules() {
+        // GIT
+        Rule git = new Rule("git", 90);
+        git.addPattern(" GIT ");
+        git.addPattern("GITHUB");
+        git.addPattern("GITLAB");
+        git.addPattern("VERSION CONTROL");
+        git.addResponse("Git basics: 'git init' (new repo), 'git clone' (copy repo), 'git add .' (stage), 'git commit -m \"msg\"', 'git push'");
+        git.addResponse("Git config: 'git config --global user.name \"Name\"' and 'git config --global user.email \"email\"'");
+        git.addResponse("Git branches: 'git branch' (list), 'git checkout -b newbranch' (create), 'git merge branch' (merge)");
+        git.setTopic("development");
+        rules.add(git);
+
+        // DOCKER
+        Rule docker = new Rule("docker", 90);
+        docker.addPattern("DOCKER");
+        docker.addPattern("CONTAINER");
+        docker.addPattern("DOCKERFILE");
+        docker.addPattern("DOCKER-COMPOSE");
+        docker.addResponse("Docker: Install with 'sudo apt install docker.io'. Add user to group: 'sudo usermod -aG docker $USER'");
+        docker.addResponse("Docker basics: 'docker run' (start container), 'docker ps' (list), 'docker build -t name .' (build image)");
+        docker.addResponse("Docker Compose: Multi-container apps. 'docker-compose up -d' (start), 'docker-compose down' (stop)");
+        docker.setTopic("development");
+        rules.add(docker);
+
+        // KUBERNETES
+        Rule kubernetes = new Rule("kubernetes", 85);
+        kubernetes.addPattern("KUBERNETES");
+        kubernetes.addPattern("K8S");
+        kubernetes.addPattern("KUBECTL");
+        kubernetes.addPattern("MINIKUBE");
+        kubernetes.addResponse("Kubernetes: Container orchestration. Local dev: 'sudo snap install microk8s --classic' or minikube");
+        kubernetes.addResponse("kubectl basics: 'kubectl get pods', 'kubectl apply -f file.yaml', 'kubectl logs podname'");
+        kubernetes.addResponse("Kubernetes concepts: Pods (containers), Deployments (replicas), Services (networking), Ingress (routing)");
+        kubernetes.setTopic("development");
+        rules.add(kubernetes);
+
+        // VS CODE
+        Rule vscode = new Rule("vscode", 80);
+        vscode.addPattern("VSCODE");
+        vscode.addPattern("VS CODE");
+        vscode.addPattern("VISUAL STUDIO CODE");
+        vscode.addResponse("VS Code: Download .deb from code.visualstudio.com or 'sudo snap install code --classic'");
+        vscode.addResponse("VS Code extensions: Install from marketplace. Popular: Python, C/C++, Docker, GitLens, Prettier");
+        vscode.addResponse("VS Code settings: Ctrl+, for settings. Integrated terminal: Ctrl+`. Command palette: Ctrl+Shift+P");
+        vscode.setTopic("development");
+        rules.add(vscode);
+
+        // VIM/NEOVIM
+        Rule vim = new Rule("vim", 80);
+        vim.addPattern(" VIM ");
+        vim.addPattern("NEOVIM");
+        vim.addPattern("NVIM");
+        vim.addResponse("Vim: Installed by default. Learn basics: vimtutor. Neovim: 'sudo apt install neovim' (modern fork)");
+        vim.addResponse("Vim modes: Normal (Esc), Insert (i), Visual (v), Command (:). Save & quit: ':wq', Quit without save: ':q!'");
+        vim.addResponse("Vim config: ~/.vimrc (vim) or ~/.config/nvim/init.vim (neovim). Plugin managers: vim-plug, packer");
+        vim.setTopic("development");
+        rules.add(vim);
+
+        // TMUX/SCREEN
+        Rule tmux = new Rule("tmux", 75);
+        tmux.addPattern("TMUX");
+        tmux.addPattern("SCREEN");
+        tmux.addPattern("TERMINAL MULTIPLEXER");
+        tmux.addResponse("tmux: Terminal multiplexer. Install: 'sudo apt install tmux'. Start: 'tmux', Prefix: Ctrl+b");
+        tmux.addResponse("tmux basics: Ctrl+b then: c (new window), n/p (next/prev), d (detach). Reattach: 'tmux attach'");
+        tmux.addResponse("tmux panes: Ctrl+b then: % (split vertical), \" (split horizontal), arrow keys (navigate)");
+        tmux.setTopic("development");
+        rules.add(tmux);
+    }
+
+    private void initializeWebServerRules() {
+        // NGINX
+        Rule nginx = new Rule("nginx", 90);
+        nginx.addPattern("NGINX");
+        nginx.addPattern("REVERSE PROXY");
+        nginx.addResponse("Nginx: Install with 'sudo apt install nginx'. Config: /etc/nginx/sites-available/");
+        nginx.addResponse("Nginx commands: 'sudo systemctl start/stop/restart nginx', 'sudo nginx -t' (test config)");
+        nginx.addResponse("Nginx reverse proxy: Set proxy_pass in location block. Load balancer: upstream directive");
+        nginx.setTopic("webserver");
+        rules.add(nginx);
+
+        // APACHE
+        Rule apache = new Rule("apache", 90);
+        apache.addPattern("APACHE");
+        apache.addPattern("APACHE2");
+        apache.addPattern("HTTPD");
+        apache.addResponse("Apache: Install with 'sudo apt install apache2'. Config: /etc/apache2/sites-available/");
+        apache.addResponse("Apache commands: 'sudo systemctl start/stop/restart apache2', 'sudo a2ensite' (enable site)");
+        apache.addResponse("Apache modules: 'sudo a2enmod rewrite ssl proxy'. Disable: 'sudo a2dismod module'");
+        apache.setTopic("webserver");
+        rules.add(apache);
+
+        // SSL/TLS
+        Rule ssl = new Rule("ssl", 85);
+        ssl.addPattern("SSL");
+        ssl.addPattern("TLS");
+        ssl.addPattern("HTTPS");
+        ssl.addPattern("CERTBOT");
+        ssl.addPattern("LET'S ENCRYPT");
+        ssl.addResponse("Let's Encrypt SSL: Install certbot, run 'sudo certbot --nginx' or '--apache'. Free automated certificates!");
+        ssl.addResponse("SSL certificate: Let's Encrypt (free), certbot (tool). Auto-renew: 'sudo certbot renew --dry-run'");
+        ssl.addResponse("HTTPS setup: Install certbot, configure webserver, run certbot. Certs auto-renew via cron");
+        ssl.setTopic("webserver");
+        rules.add(ssl);
+    }
+
+    private void initializeDatabaseRules() {
+        // MYSQL/MARIADB
+        Rule mysql = new Rule("mysql", 90);
+        mysql.addPattern("MYSQL");
+        mysql.addPattern("MARIADB");
+        mysql.addResponse("MySQL/MariaDB: Install with 'sudo apt install mysql-server'. Secure: 'sudo mysql_secure_installation'");
+        mysql.addResponse("MySQL commands: Login: 'sudo mysql', Create DB: 'CREATE DATABASE dbname;', Show: 'SHOW DATABASES;'");
+        mysql.addResponse("MySQL user: 'CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';' Grant: 'GRANT ALL ON db.* TO 'user'@'localhost';'");
+        mysql.setTopic("database");
+        rules.add(mysql);
+
+        // POSTGRESQL
+        Rule postgres = new Rule("postgresql", 90);
+        postgres.addPattern("POSTGRESQL");
+        postgres.addPattern("POSTGRES");
+        postgres.addResponse("PostgreSQL: Install with 'sudo apt install postgresql postgresql-contrib'. Login: 'sudo -u postgres psql'");
+        postgres.addResponse("PostgreSQL commands: Create DB: 'CREATE DATABASE dbname;', List: '\\l', Connect: '\\c dbname'");
+        postgres.addResponse("PostgreSQL user: 'CREATE USER username WITH PASSWORD 'password';' Grant: 'GRANT ALL ON DATABASE dbname TO username;'");
+        postgres.setTopic("database");
+        rules.add(postgres);
+
+        // MONGODB
+        Rule mongodb = new Rule("mongodb", 85);
+        mongodb.addPattern("MONGODB");
+        mongodb.addPattern("MONGO");
+        mongodb.addPattern("NOSQL");
+        mongodb.addResponse("MongoDB: NoSQL database. Install from MongoDB repo. Start: 'sudo systemctl start mongod'");
+        mongodb.addResponse("MongoDB shell: 'mongosh'. Commands: 'show dbs', 'use dbname', 'db.collection.find()'");
+        mongodb.addResponse("MongoDB tools: mongodump (backup), mongorestore (restore), mongoimport/mongoexport");
+        mongodb.setTopic("database");
+        rules.add(mongodb);
+
+        // REDIS
+        Rule redis = new Rule("redis", 85);
+        redis.addPattern("REDIS");
+        redis.addPattern("CACHE");
+        redis.addPattern("KEY-VALUE");
+        redis.addResponse("Redis: In-memory data store. Install: 'sudo apt install redis-server'. CLI: 'redis-cli'");
+        redis.addResponse("Redis commands: SET key value, GET key, DEL key, KEYS *, FLUSHALL (clear all)");
+        redis.addResponse("Redis use cases: Caching, session storage, pub/sub, queues. Very fast (in-memory)");
+        redis.setTopic("database");
+        rules.add(redis);
+    }
+
+    private void initializeCloudDevOpsRules() {
+        // AWS
+        Rule aws = new Rule("aws", 80);
+        aws.addPattern(" AWS ");
+        aws.addPattern("AMAZON WEB SERVICES");
+        aws.addPattern("EC2");
+        aws.addPattern("S3");
+        aws.addResponse("AWS CLI: Install with 'sudo apt install awscli'. Configure: 'aws configure' (need access key)");
+        aws.addResponse("AWS services: EC2 (servers), S3 (storage), RDS (databases), Lambda (serverless), CloudFront (CDN)");
+        aws.addResponse("AWS tools: aws cli, terraform, cloudformation. SDK: boto3 (Python), aws-sdk (JavaScript)");
+        aws.setTopic("cloud");
+        rules.add(aws);
+
+        // TERRAFORM
+        Rule terraform = new Rule("terraform", 80);
+        terraform.addPattern("TERRAFORM");
+        terraform.addPattern("INFRASTRUCTURE AS CODE");
+        terraform.addResponse("Terraform: Infrastructure as code. Install from HashiCorp repo. Commands: init, plan, apply, destroy");
+        terraform.addResponse("Terraform workflow: Write .tf files, 'terraform init', 'terraform plan', 'terraform apply'");
+        terraform.addResponse("Terraform manages: AWS, Azure, GCP, DigitalOcean resources declaratively");
+        terraform.setTopic("cloud");
+        rules.add(terraform);
+
+        // ANSIBLE
+        Rule ansible = new Rule("ansible", 80);
+        ansible.addPattern("ANSIBLE");
+        ansible.addPattern("CONFIGURATION MANAGEMENT");
+        ansible.addResponse("Ansible: Configuration management. Install: 'sudo apt install ansible'. Playbooks: YAML format");
+        ansible.addResponse("Ansible commands: 'ansible-playbook playbook.yml', 'ansible all -m ping' (test connectivity)");
+        ansible.addResponse("Ansible inventory: /etc/ansible/hosts. SSH-based, agentless automation tool");
+        ansible.setTopic("cloud");
+        rules.add(ansible);
+    }
+
+    private void initializeGamingRules() {
+        // STEAM/PROTON
+        Rule steam = new Rule("steam", 85);
+        steam.addPattern("STEAM");
+        steam.addPattern("PROTON");
+        steam.addPattern("GAMING");
+        steam.addResponse("Steam: Install with 'sudo apt install steam' or download from steampowered.com");
+        steam.addResponse("Proton: Steam's Windows compatibility layer. Enable in Steam Settings → Steam Play → Enable for all titles");
+        steam.addResponse("Gaming on Linux: Steam Proton, Lutris, Wine. Check ProtonDB for game compatibility");
+        steam.setTopic("gaming");
+        rules.add(steam);
+
+        // WINE/LUTRIS
+        Rule wine = new Rule("wine", 85);
+        wine.addPattern("WINE");
+        wine.addPattern("LUTRIS");
+        wine.addPattern("WINDOWS GAMES");
+        wine.addResponse("Wine: Windows compatibility layer. Install: 'sudo apt install wine64 wine32'. Run: 'wine program.exe'");
+        wine.addResponse("Lutris: Game manager. Install from lutris.net. Handles Wine, Proton, emulators automatically");
+        wine.addResponse("Wine configuration: 'winecfg' for settings. Use Wine-Staging or Wine-GE for better compatibility");
+        wine.setTopic("gaming");
+        rules.add(wine);
+
+        // GAMEPAD/CONTROLLER
+        Rule gamepad = new Rule("gamepad", 75);
+        gamepad.addPattern("GAMEPAD");
+        gamepad.addPattern("CONTROLLER");
+        gamepad.addPattern("JOYSTICK");
+        gamepad.addPattern("XBOX");
+        gamepad.addPattern("PLAYSTATION");
+        gamepad.addResponse("Gamepad: Most USB controllers work plug-and-play. Xbox/PS controllers supported natively");
+        gamepad.addResponse("Test gamepad: 'jstest /dev/input/js0' or use 'evtest'. GUI: antimicrox for key mapping");
+        gamepad.addResponse("Controller tools: xboxdrv (Xbox), ds4drv (PS4), antimicrox (mapping), SDL2 (gaming library)");
+        gamepad.setTopic("gaming");
+        rules.add(gamepad);
+    }
+
+    private void initializeAIMLRules() {
+        // MACHINE LEARNING
+        Rule ml = new Rule("machine-learning", 85);
+        ml.addPattern("MACHINE LEARNING");
+        ml.addPattern("ML ");
+        ml.addPattern("TENSORFLOW");
+        ml.addPattern("PYTORCH");
+        ml.addResponse("ML on Ubuntu: Install Python, pip, then: 'pip install tensorflow' or 'pip install torch torchvision'");
+        ml.addResponse("ML tools: TensorFlow, PyTorch, scikit-learn. IDE: Jupyter Notebook. GPU: CUDA/cuDNN for NVIDIA");
+        ml.addResponse("ML setup: Python 3.8+, pip, virtual environment. Install: numpy, pandas, matplotlib, sklearn, tensorflow/pytorch");
+        ml.setTopic("ai-ml");
+        rules.add(ml);
+
+        // JUPYTER
+        Rule jupyter = new Rule("jupyter", 80);
+        jupyter.addPattern("JUPYTER");
+        jupyter.addPattern("NOTEBOOK");
+        jupyter.addPattern("JUPYTERLAB");
+        jupyter.addResponse("Jupyter: Install with 'pip install jupyter' or 'pip install jupyterlab'. Start: 'jupyter notebook'");
+        jupyter.addResponse("Jupyter Lab: Modern interface. 'jupyter lab' to start. Supports Python, R, Julia notebooks");
+        jupyter.addResponse("Jupyter: Interactive Python environment. Great for data science, ML, visualization");
+        jupyter.setTopic("ai-ml");
+        rules.add(jupyter);
+
+        // CUDA/NVIDIA
+        Rule cuda = new Rule("cuda", 85);
+        cuda.addPattern("CUDA");
+        cuda.addPattern("CUDNN");
+        cuda.addPattern("NVIDIA");
+        cuda.addPattern("GPU");
+        cuda.addResponse("NVIDIA GPU: Install driver: 'sudo ubuntu-drivers autoinstall'. CUDA: Download from NVIDIA developer site");
+        cuda.addResponse("CUDA setup: Install NVIDIA driver, CUDA toolkit, cuDNN library. Verify: 'nvidia-smi'");
+        cuda.addResponse("GPU acceleration: Requires NVIDIA driver + CUDA + cuDNN. PyTorch: 'torch.cuda.is_available()'");
+        cuda.setTopic("ai-ml");
+        rules.add(cuda);
+    }
+
+    private void initializeHardwareRules() {
+        // CPU/PROCESSOR
+        Rule cpu = new Rule("cpu", 80);
+        cpu.addPattern("CPU");
+        cpu.addPattern("PROCESSOR");
+        cpu.addPattern("CORES");
+        cpu.addResponse("CPU info: 'lscpu' or 'cat /proc/cpuinfo'. Monitor: 'htop' or 'top'. Temperature: 'sensors'");
+        cpu.addResponse("CPU load: 'uptime' (load average), 'mpstat' (per-core), 'htop' (interactive monitor)");
+        cpu.addResponse("CPU frequency: 'cpufreq-info'. Set governor: 'cpufreq-set -g performance/powersave'");
+        cpu.setTopic("hardware");
+        rules.add(cpu);
+
+        // MEMORY/RAM
+        Rule memory = new Rule("memory", 80);
+        memory.addPattern("MEMORY");
+        memory.addPattern(" RAM ");
+        memory.addPattern("OUT OF MEMORY");
+        memory.addResponse("Memory: Check with 'free -h'. Detailed: 'cat /proc/meminfo'. Monitor: 'htop' or 'vmstat'");
+        memory.addResponse("RAM usage: 'free -h' shows used/free. 'top' shows per-process. Clear cache: 'sudo sync; echo 3 | sudo tee /proc/sys/vm/drop_caches'");
+        memory.addResponse("Memory info: 'sudo dmidecode --type memory' (hardware details). Test: 'memtest86+' from GRUB");
+        memory.setTopic("hardware");
+        rules.add(memory);
+
+        // GRAPHICS/GPU
+        Rule graphics = new Rule("graphics-hardware", 80);
+        graphics.addPattern("GRAPHICS CARD");
+        graphics.addPattern("VIDEO CARD");
+        graphics.addPattern(" GPU ");
+        graphics.addResponse("GPU info: 'lspci | grep VGA'. NVIDIA: 'nvidia-smi'. AMD: 'radeontop'. Intel: 'intel_gpu_top'");
+        graphics.addResponse("Graphics driver: NVIDIA: nvidia-driver-xxx, AMD: amdgpu (built-in), Intel: i915 (built-in)");
+        graphics.addResponse("Check GPU: 'glxinfo | grep OpenGL' (OpenGL info), 'vulkaninfo' (Vulkan support)");
+        graphics.setTopic("hardware");
+        rules.add(graphics);
+    }
+
+    private void initializeOfficeProductivityRules() {
+        // LIBREOFFICE
+        Rule libreoffice = new Rule("libreoffice", 80);
+        libreoffice.addPattern("LIBREOFFICE");
+        libreoffice.addPattern("WRITER");
+        libreoffice.addPattern("CALC");
+        libreoffice.addPattern("IMPRESS");
+        libreoffice.addResponse("LibreOffice: Free office suite. Usually pre-installed. Components: Writer (Word), Calc (Excel), Impress (PowerPoint)");
+        libreoffice.addResponse("Install LibreOffice: 'sudo apt install libreoffice'. Full suite or individual: libreoffice-writer, libreoffice-calc");
+        libreoffice.addResponse("LibreOffice formats: Native ODF (.odt, .ods, .odp). Compatible with MS Office (.docx, .xlsx, .pptx)");
+        libreoffice.setTopic("productivity");
+        rules.add(libreoffice);
+
+        // PDF
+        Rule pdf = new Rule("pdf", 80);
+        pdf.addPattern(" PDF ");
+        pdf.addPattern("PDF VIEWER");
+        pdf.addPattern("PDF EDITOR");
+        pdf.addResponse("PDF viewer: Evince (GNOME), Okular (KDE). Editor: pdfarranger, PDF Mix Tool");
+        pdf.addResponse("PDF tools: pdftk (manipulation), ghostscript (conversion), imagemagick (convert)");
+        pdf.addResponse("Create PDF: LibreOffice → Export as PDF. Command line: 'libreoffice --headless --convert-to pdf file.docx'");
+        pdf.setTopic("productivity");
+        rules.add(pdf);
+    }
+
+    private void initializeSecurityRules() {
+        // FIREWALL
+        Rule firewall = new Rule("firewall-security", 90);
+        firewall.addPattern("FIREWALL");
+        firewall.addPattern("UFW");
+        firewall.addPattern("IPTABLES");
+        firewall.addResponse("UFW (Uncomplicated Firewall): Enable: 'sudo ufw enable'. Allow port: 'sudo ufw allow 22/tcp'");
+        firewall.addResponse("UFW commands: 'sudo ufw status', 'sudo ufw allow/deny port', 'sudo ufw delete rule'");
+        firewall.addResponse("Firewall: UFW (simple), iptables (advanced), firewalld (RHEL-style). Check: 'sudo ufw status'");
+        firewall.setTopic("security");
+        rules.add(firewall);
+
+        // SSH SECURITY
+        Rule sshsec = new Rule("ssh-security", 85);
+        sshsec.addPattern("SSH KEY");
+        sshsec.addPattern("SSH SECURITY");
+        sshsec.addPattern("SSH-KEYGEN");
+        sshsec.addResponse("SSH keys: Generate: 'ssh-keygen -t ed25519 -C \"email\"'. Copy to server: 'ssh-copy-id user@host'");
+        sshsec.addResponse("SSH security: Use keys (not passwords), disable root login, change default port, use fail2ban");
+        sshsec.addResponse("SSH config: /etc/ssh/sshd_config. Set: PermitRootLogin no, PasswordAuthentication no, Port 2222");
+        sshsec.setTopic("security");
+        rules.add(sshsec);
+
+        // ENCRYPTION
+        Rule encryption = new Rule("encryption", 85);
+        encryption.addPattern("ENCRYPTION");
+        encryption.addPattern("ENCRYPT");
+        encryption.addPattern("LUKS");
+        encryption.addPattern("GPG");
+        encryption.addResponse("Disk encryption: LUKS (full disk). GPG: File encryption. Install: 'sudo apt install cryptsetup gnupg'");
+        encryption.addResponse("GPG commands: Generate key: 'gpg --gen-key', Encrypt: 'gpg -e -r recipient file', Decrypt: 'gpg -d file.gpg'");
+        encryption.addResponse("LUKS: Encrypt partition/drive. Create: 'cryptsetup luksFormat /dev/sdX', Open: 'cryptsetup open /dev/sdX name'");
+        encryption.setTopic("security");
+        rules.add(encryption);
+    }
 
     public ConversationContext getContext() {
         return context;
